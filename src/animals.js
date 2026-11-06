@@ -14,7 +14,7 @@ export function loadAnimals(){
    texture.colorSpace=THREE.SRGBColorSpace;texture.flipY=config.flipY;texture.anisotropy=2;
    const material=new THREE.MeshStandardMaterial({map:texture,roughness:1,metalness:0});
    gltf.scene.traverse(o=>{if(o.isMesh)o.material=material;});
-  }else{
+  }else if(!config.smoothTexture){
    // Original glTF materials keep their own UV convention.
    gltf.scene.traverse(o=>{if(o.isMesh)for(const m of (Array.isArray(o.material)?o.material:[o.material]))if(m.map){m.map.magFilter=THREE.NearestFilter;m.map.minFilter=THREE.NearestFilter;m.map.generateMipmaps=false;m.map.needsUpdate=true;}});
   }
@@ -31,7 +31,9 @@ export class AnimalAvatar {
   this.mixer=new THREE.AnimationMixer(this.visual);this.actions=new Map(t.animations.map(c=>[c.name,this.mixer.clipAction(c)]));this.phase=phase;this.elapsed=phase;this.deferred=0;this.current='';this.setMotion('idle');this.mixer.update(phase%2);
  }
  setMotion(motion){
-  const name=motion==='run'&&!this.actions.has('run')?'walk':motion;
+  // New packs may have no authored jump, alternate idle or sitting clip.
+  // Reuse their neutral pose instead of retaining a running animation in midair.
+  const name=this.actions.has(motion)?motion:motion==='run'&&this.actions.has('walk')?'walk':'idle';
   if(!this.actions.has(name))return;
   const key=motion+':'+name;if(key===this.current)return;
   const next=this.actions.get(name),old=this.action;

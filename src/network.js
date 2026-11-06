@@ -8,7 +8,7 @@ export class SchoolConnection {
   const clearWait=()=>{clearTimeout(slow);clearTimeout(timeout);};
   ws.onopen=()=>{const key=`school:${this.url}:${this.profile.role}:${this.profile.number}`;this.key=key;ws.send(JSON.stringify({type:'join',...this.profile,token:sessionStorage.getItem(key)}));};
   ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.type==='error'){this.stopped=true;this.onStatus(m.message);}
-   if(m.type==='welcome'){clearWait();this.connected=true;this.id=m.id;this.seq=m.ack;this.pending=[];sessionStorage.setItem(this.key,m.token);this.onStatus('연결 완료');this.retry=0;}
+   if(m.type==='welcome'){clearWait();this.connected=true;this.id=m.id;this.seq=m.ack;this.pending=[];sessionStorage.setItem(this.key,m.token);this.onStatus('연결 완료');this.onEvent({type:'serverVersion',version:m.version});this.retry=0;}
    if(['gameEvent','commandRejected'].includes(m.type))this.onEvent(m);
    if(m.type==='state'&&this.connected)this.onState(m);
   };

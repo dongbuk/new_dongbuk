@@ -1,3 +1,5 @@
+최신 변경: [전원 구출·랜덤 등장 및 배포 버전 확인](RESCUE_ALL_UPDATE.md).
+
 최신 수정: [입장창·달리기·양쪽 구출 보호 업데이트](UPDATE_NOTES.md).
 
 # Netlify + Render 배포 준비

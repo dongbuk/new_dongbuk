@@ -1,0 +1,72 @@
+[
+  {
+    "id": "happy_horse",
+    "source": "source/Animals_FREE.fbx",
+    "sha256": "f89fa54594185f73fb592dd23b1c38c26df948970560bd4a90a323afe84e2610",
+    "bytes": 666516,
+    "animationOrigin": "supplied idle/walk/run; jump uses idle pose"
+  },
+  {
+    "id": "happy_deer",
+    "source": "source/separate/Deer_001.fbx",
+    "sha256": "978c9129f90fb01583a90e115a72cd85b8c7c33e98a2e4549a47e1e89241a5b7",
+    "bytes": 746872,
+    "animationOrigin": "supplied idle/walk/run; jump uses idle pose"
+  },
+  {
+    "id": "happy_kitty",
+    "source": "source/separate/Kitty_001.fbx",
+    "sha256": "608452a7fad91f796f3b164a04c91c3dacff865960d3b074baa298c4ec784011",
+    "bytes": 591428,
+    "animationOrigin": "supplied idle/walk/run; jump uses idle pose"
+  },
+  {
+    "id": "happy_dog",
+    "source": "source/separate/Dog_001.fbx",
+    "sha256": "5bc111acf0622df1562a822bfbab5cb7ba366eee37e5130b967ba09ed6f8b34b",
+    "bytes": 615268,
+    "animationOrigin": "supplied idle/walk/run; jump uses idle pose"
+  },
+  {
+    "id": "happy_penguin",
+    "source": "source/separate/Pinguin_001.fbx",
+    "sha256": "f8b6b26e76865cfef59872d14cb737e82899c1c91a9df38acbfab4c59ad8d806",
+    "bytes": 461100,
+    "animationOrigin": "supplied idle/walk/run; jump uses idle pose"
+  },
+  {
+    "id": "happy_chicken",
+    "source": "source/separate/Chicken_001.fbx",
+    "sha256": "c91b9da7a230290047bea722ceab902b10836811aae918e9bcd2fc44faccb498",
+    "bytes": 551024,
+    "animationOrigin": "supplied idle/walk/run; jump uses idle pose"
+  },
+  {
+    "id": "happy_tiger",
+    "source": "source/separate/Tiger_001.fbx",
+    "sha256": "236a723f63e9653caf4b190b6ad5b8aba3d1b5003ae3eac1f858f352cb06680f",
+    "bytes": 801792,
+    "animationOrigin": "supplied idle/walk/run; jump uses idle pose"
+  },
+  {
+    "id": "slime_big",
+    "source": "cute-enemy-slime/source/slime.fbx",
+    "sha256": "da54b07cd1e26b77513a4b240310bca9105ba0f4dec1bf98536ec0941bac8b8a",
+    "bytes": 377920,
+    "animationOrigin": "custom squash clips on supplied static mesh; no supplied skeletal animations"
+  },
+  {
+    "id": "slime_small",
+    "source": "cute-enemy-slime/source/slime.fbx",
+    "sha256": "da54b07cd1e26b77513a4b240310bca9105ba0f4dec1bf98536ec0941bac8b8a",
+    "bytes": 351608,
+    "animationOrigin": "custom squash clips on supplied static mesh; no supplied skeletal animations"
+  },
+  {
+    "id": "stickman",
+    "source": "free_pack_stick_man_rigged/source/Free Pack - Stick Man.fbx",
+    "sha256": "ee0c38833ae122f3c74831719bb16406cdc1d1d514079830dbd445c9c4133eb5",
+    "bytes": 178984,
+    "animationOrigin": "custom simple gait on supplied rig; gray source material, no texture supplied"
+  }
+]

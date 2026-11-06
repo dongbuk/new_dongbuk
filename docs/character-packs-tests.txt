@@ -1,0 +1,65 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> dongbuk-schoolworld@0.2.0 test
+> node --test tests/*.test.mjs
+
+33-rig CPU animation, 300 frames: 121ms; not GPU/FPS certification
+✔ animal allowlist and visual motion do not affect movement rules (1.580006ms)
+✔ cat: supplied rig, clips, independent clone and animated skin (68.434853ms)
+✔ fox: supplied rig, clips, independent clone and animated skin (36.787628ms)
+✔ owl: supplied rig, clips, independent clone and animated skin (19.796391ms)
+✔ colobus: supplied rig, clips, independent clone and animated skin (14.823213ms)
+✔ gecko: supplied rig, clips, independent clone and animated skin (13.388335ms)
+✔ herring: supplied rig, clips, independent clone and animated skin (24.215774ms)
+✔ inkfish: supplied rig, clips, independent clone and animated skin (17.691163ms)
+✔ muskrat: supplied rig, clips, independent clone and animated skin (11.215555ms)
+✔ pudu: supplied rig, clips, independent clone and animated skin (18.931291ms)
+✔ sparrow: supplied rig, clips, independent clone and animated skin (9.98077ms)
+✔ taipan: supplied rig, clips, independent clone and animated skin (6.935553ms)
+✔ 33 independent animated rigs stay finite for 300 simulation frames (429.132001ms)
+✔ FBX-derived texture uses source UV orientation; embedded glTF keeps its own convention (0.141103ms)
+✔ happy_horse: uploaded model has independent animation and valid material (25.343512ms)
+✔ happy_deer: uploaded model has independent animation and valid material (10.404409ms)
+✔ happy_kitty: uploaded model has independent animation and valid material (11.912368ms)
+✔ happy_dog: uploaded model has independent animation and valid material (11.613636ms)
+✔ happy_penguin: uploaded model has independent animation and valid material (7.115915ms)
+✔ happy_chicken: uploaded model has independent animation and valid material (8.233121ms)
+✔ happy_tiger: uploaded model has independent animation and valid material (66.947613ms)
+✔ slime_big: uploaded model has independent animation and valid material (1.097137ms)
+✔ slime_small: uploaded model has independent animation and valid material (0.684644ms)
+✔ stickman: uploaded model has independent animation and valid material (4.083044ms)
+✔ slow connection displays a wait notice and retries instead of hanging forever (1.540536ms)
+✔ 33 real sockets: start, capture broadcast, rescue broadcast, reconnect, late join, victory and restart (6129.914101ms)
+✔ teacher-only start, automatic waiting, 32 => 8 police + 24 thieves, unchanged positions and timed phases (4.137863ms)
+✔ capture rejects range, walls, floor, same team, repeat; jail clamps all movement (13.562639ms)
+✔ rescue requires stationary two seconds, releases one, three seconds immunity, capture cancels (1.934861ms)
+✔ simultaneous rescue attempts cannot release a prisoner twice; cancel and pause freeze timers (1.076295ms)
+✔ police and thief win, results, free return, next round, late arrivals and disconnect cleanup (0.742702ms)
+✔ paused students freeze including jump height; release cancel prevents completion (0.401115ms)
+✔ rescuer and rescued friend both resist capture until the same three-second deadline (0.842101ms)
+✔ 32-player rescue releases all 23 prisoners, including reconnect grace, to distinct safe random ground (1.895953ms)
+✔ two simultaneous rescuers release group once with no duplicated scores (2.268355ms)
+✔ 32 students and one teacher, duplicate and invalid teacher rejected (175.464027ms)
+✔ reconnect preserves position and token never appears in snapshots (426.505396ms)
+✔ server ignores coordinates, invalid and repeated inputs; caps speed (396.016174ms)
+✔ animal choice broadcasts and survives reconnect; invalid choice defaults safely (107.795289ms)
+✔ all 21 character choices reach the shared snapshot unchanged (76.575155ms)
+✔ appearance changes before start, rejects invalid choice and locks during play (207.988139ms)
+✔ students cannot invoke teacher game commands (3.96241ms)
+✔ server owns sprint stamina and broadcasts it; client cannot refill it (134.063844ms)
+✔ sprint drains 20 per second, exhausts after five seconds, then walks and recovers (7.90108ms)
+✔ walking or standing recovers 12 per second capped at 100; Shift standing does not consume (8.717452ms)
+✔ exhaustion restarts at 20 percent, paused movement freezes gauge (0.47642ms)
+✔ spawn and main entry remain open (1.485163ms)
+✔ solid school walls reject collision (1.398502ms)
+✔ large displacement does not tunnel through wall (5.754318ms)
+✔ world bounds prevent escape (0.713157ms)
+✔ diagonal movement slides along wall (0.294154ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6276.76197

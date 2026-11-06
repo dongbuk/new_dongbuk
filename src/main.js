@@ -1,3 +1,4 @@
+import {RELEASE} from './release.mjs';
 import * as THREE from 'three';
 import './style.css';
 import {loadAnimals,AnimalAvatar} from './animals.js';
@@ -8,6 +9,7 @@ import {createGameUI} from './game-ui.js';
 import {SchoolConnection} from './network.js';
 import {walls,benches,move,zone,BOUNDS} from './world.mjs';
 const $=id=>document.getElementById(id);
+const releaseTag=document.createElement('small');releaseTag.id='releaseTag';releaseTag.textContent=`화면 ${RELEASE} · 서버 미연결`;document.body.append(releaseTag);
 let renderer;
 try { renderer=new THREE.WebGLRenderer({canvas:$('world'),antialias:true,alpha:false}); } catch(error) {
   const notice=document.createElement('p');
@@ -87,10 +89,10 @@ $('enter').onclick=()=>{
  if(net||!assetsReady)return;const role=$('connection').value;
  let url;try{url=new URL($('serverurl').value.trim());if(!['ws:','wss:'].includes(url.protocol)||(location.protocol==='https:'&&url.protocol!=='wss:'))throw Error();}catch{$('connectmessage').textContent='서버 주소를 확인해 주세요. HTTPS 화면에서는 wss:// 주소가 필요해요.';return;}
  const number=Number($('number').value);if(role==='student'&&(!Number.isInteger(number)||number<1||number>32)){$('connectmessage').textContent='학생 번호는 1~32번이에요.';return;}
- net=new SchoolConnection(url.href,networkState,message=>{$('netstatus').textContent=message;$('connectmessage').textContent=message;if(net?.stopped){net=null;$('enter').disabled=false;}},event=>gameUI.event(event));
+ net=new SchoolConnection(url.href,networkState,message=>{$('netstatus').textContent=message;$('connectmessage').textContent=message;if(net?.stopped){net=null;$('enter').disabled=false;}},event=>{if(event.type==='serverVersion'){releaseTag.textContent=`화면 ${RELEASE} · 서버 ${event.version||'구버전'}`;if(event.version!==RELEASE)toast('화면과 서버 버전이 다릅니다. 양쪽 최신 배포를 확인해 주세요.');}else gameUI.event(event);});
  $('enter').disabled=true;net.connect({role,number,name:$('nickname').value,animal:$('animal').value,code:$('teachercode').value});$('teachercode').value='';
 };
-const wardrobe=document.createElement('dialog');wardrobe.innerHTML='<h2>동물 바꾸기 🎨</h2><label>함께할 동물<select id="wardrobeAnimal"></select></label><p>게임 시작 전에는 자유롭게 바꿀 수 있어요.</p><button id="closeWardrobe" class="primary">돌아가기</button>';document.body.append(wardrobe);
+const wardrobe=document.createElement('dialog');wardrobe.innerHTML='<h2>캐릭터 바꾸기 🎨</h2><label>함께할 캐릭터<select id="wardrobeAnimal"></select></label><p>게임 시작 전에는 자유롭게 바꿀 수 있어요.</p><button id="closeWardrobe" class="primary">돌아가기</button>';document.body.append(wardrobe);
 $('wardrobeAnimal').replaceChildren(...Object.entries(ANIMALS).map(([id,c])=>new Option(`${c.icon} ${c.name}`,id)));
 $('wardrobeAnimal').onchange=()=>{const id=$('wardrobeAnimal').value;if(net){if(!net.connected){toast('다시 연결된 후 변경해 주세요.');return;}net.ws.send(JSON.stringify({type:'appearance',animal:id}));}else{$('animal').value=id;selectAnimal(id);}};
 $('closeWardrobe').onclick=()=>wardrobe.close();

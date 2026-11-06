@@ -1,9 +1,24 @@
+import {collides} from '../src/world.mjs';
 import {randomInt} from 'node:crypto';
 import {RULES,inRange,lineClear,livePhases} from '../src/game-rules.mjs';
 export function createGame(players,emit,{clock=Date.now,rules={}}={}){
  const config={...RULES,...rules},game={phase:'FREE_EXPLORATION',round:0,endsAt:0,winner:null,reason:null,result:[]};
  const students=()=>[...players.values()].filter(p=>p.role==='student');
  const participants=()=>students().filter(p=>p.participant);
+ function rescuePositions(count){
+  const occupied=participants().filter(p=>p.status==='ACTIVE');const candidates=[];
+  // Existing outdoor ground: no buildings, jail, walls, trees or benches.
+  for(let x=-32;x<=32;x+=3)for(let z=4;z<=32;z+=3){
+   if(collides(x,z,1)||Math.hypot(x-config.jail.x,z-config.jail.z)<7)continue;
+   if(occupied.some(p=>Math.hypot(x-p.x,z-p.z)<1.2))continue;
+   candidates.push({x,z});
+  }
+  for(let i=candidates.length-1;i>0;i--){const j=randomInt(i+1);[candidates[i],candidates[j]]=[candidates[j],candidates[i]];}
+  const safer=candidates.filter(v=>!occupied.some(p=>p.team==='police'&&Math.hypot(v.x-p.x,v.z-p.z)<4));
+  const pool=[...safer,...candidates.filter(v=>!safer.includes(v))];
+  if(pool.length<count)throw Error('Not enough safe rescue positions');
+  return pool.slice(0,count);
+ }
  function reset(p){Object.assign(p,{stamina:100,exhausted:false,sprinting:false,participant:false,team:null,status:'WAITING',ready:false,captures:0,rescues:0,captureAt:0,protectedUntil:0,rescuing:null});}
  function init(p){reset(p);if(game.phase==='GAME_WAITING')p.participant=true;}
  function phase(value,duration=0){game.phase=value;game.endsAt=duration?clock()+duration:0;for(const p of players.values()){p.queue=[];p.rescuing=null;}emit({type:'gameEvent',kind:'phase',phase:value});}
@@ -41,7 +56,7 @@ export function createGame(players,emit,{clock=Date.now,rules={}}={}){
    if(m.action==='cancel'){p.rescuing=null;return;}
    if(game.phase!=='CHASE_PHASE'||!p.participant||p.team!=='thief'||p.status!=='ACTIVE')return reject('NOT_FREE_THIEF');
    if(!inRange(p,config.rescue,config.rescueRange)||!lineClear(p,config.rescue))return reject('OUT_OF_REACH');
-   if(!participants().some(s=>s.status==='CAPTURED'&&s.ws))return reject('NO_PRISONER');
+   if(!participants().some(s=>s.status==='CAPTURED'))return reject('NO_PRISONER');
    if(!p.rescuing)p.rescuing={x:p.x,z:p.z,y:p.y,startedAt:now};return;
   }
  }
@@ -51,7 +66,11 @@ export function createGame(players,emit,{clock=Date.now,rules={}}={}){
   else if(game.phase==='CHASE_PHASE'&&now>=game.endsAt){checkWin();if(game.phase==='CHASE_PHASE')finish('thief','TIME_UP');}
   if(game.phase!=='CHASE_PHASE')return;
   for(const p of participants())if(p.rescuing){const r=p.rescuing;if(!p.ws||p.status!=='ACTIVE'||Math.hypot(p.x-r.x,p.z-r.z)>.08||Math.abs(p.y-r.y)>.08||!inRange(p,config.rescue,config.rescueRange)){p.rescuing=null;continue;}
-   if(now-r.startedAt>=config.rescueMs){p.rescuing=null;const t=participants().find(s=>s.status==='CAPTURED'&&s.ws);if(!t)continue;Object.assign(t,{status:'ACTIVE',...config.exit,y:0,vy:0,protectedUntil:now+config.protectionMs,queue:[]});t.teleport=(t.teleport||0)+1;p.protectedUntil=now+config.protectionMs;p.rescues++;emit({type:'gameEvent',kind:'rescue',actor:p.id,target:t.id});}
+   if(now-r.startedAt>=config.rescueMs){p.rescuing=null;const targets=participants().filter(s=>s.status==='CAPTURED');if(!targets.length)continue;
+    const positions=rescuePositions(targets.length);
+    targets.forEach((t,i)=>{Object.assign(t,{status:'ACTIVE',...positions[i],y:0,vy:0,protectedUntil:now+config.protectionMs,queue:[]});t.teleport=(t.teleport||0)+1;});
+    for(const s of participants())s.rescuing=null;
+    p.protectedUntil=now+config.protectionMs;p.rescues+=targets.length;emit({type:'gameEvent',kind:'rescue',actor:p.id,targets:targets.map(t=>t.id),count:targets.length});}
   }checkWin();
  }
  function leave(p){if(p.participant){p.status='LEFT';p.rescuing=null;checkWin();}}

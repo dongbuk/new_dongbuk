@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';import fs f
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';import {clone} from 'three/addons/utils/SkeletonUtils.js';import {AnimationMixer,Vector3,Texture} from 'three';import {ANIMALS,animalId,motionFor} from '../src/animal-catalog.mjs';
 async function asset(id){const b=fs.readFileSync(`public/animals/${id}.glb`);return new GLTFLoader().register(()=>({name:'CPU_TEST_TEXTURE',loadTexture:()=>Promise.resolve(new Texture())})).parseAsync(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength),'');}
 test('animal allowlist and visual motion do not affect movement rules',()=>{assert.equal(animalId('../bad'),'cat');assert.equal(animalId('fox'),'fox');assert.equal(motionFor(7,0),'run');assert.equal(motionFor(4,0),'walk');assert.equal(motionFor(0,.2),'jump');assert.equal(motionFor(0,0),'idle');});
-for(const id of Object.keys(ANIMALS))test(`${id}: supplied rig, clips, independent clone and animated skin`,async()=>{
+for(const id of Object.keys(ANIMALS).filter(id=>!ANIMALS[id].pack))test(`${id}: supplied rig, clips, independent clone and animated skin`,async()=>{
  const a=await asset(id),names=a.animations.map(c=>c.name);for(const name of ['idle','idle_alt','walk','jump','sit'])assert.ok(names.includes(name));
  const one=clone(a.scene),two=clone(a.scene);let mesh1,mesh2;one.traverse(o=>{if(o.isSkinnedMesh)mesh1=o;});two.traverse(o=>{if(o.isSkinnedMesh)mesh2=o;});assert.ok(mesh1);assert.equal(mesh1.geometry,mesh2.geometry);assert.notEqual(mesh1.skeleton.bones[0],mesh2.skeleton.bones[0]);assert.ok((mesh1.geometry.index?.count||mesh1.geometry.attributes.position.count)/3<=2700);
  const mixer=new AnimationMixer(one);mixer.clipAction(a.animations.find(c=>c.name==='walk')).play();mixer.update(.1);one.updateMatrixWorld(true);mesh1.skeleton.update();const before=[];for(let i=0;i<mesh1.geometry.attributes.position.count;i+=31)before.push(mesh1.getVertexPosition(i,new Vector3()).clone());mixer.update(.2);one.updateMatrixWorld(true);mesh1.skeleton.update();let changed=0;for(let i=0,j=0;i<mesh1.geometry.attributes.position.count;i+=31,j++)if(before[j].distanceTo(mesh1.getVertexPosition(i,new Vector3()))>1e-5)changed++;assert.ok(changed>5,'walk must deform the supplied skin');
@@ -13,3 +13,11 @@ test('33 independent animated rigs stay finite for 300 simulation frames',async(
 });
 
 test('FBX-derived texture uses source UV orientation; embedded glTF keeps its own convention',()=>{for(const id of ['cat','fox','owl'])assert.equal(ANIMALS[id].flipY,true);for(const id of Object.keys(ANIMALS).slice(3))assert.equal(ANIMALS[id].externalTexture,undefined);});
+
+for(const id of Object.keys(ANIMALS).filter(id=>ANIMALS[id].pack))test(`${id}: uploaded model has independent animation and valid material`,async()=>{
+ const a=await asset(id);for(const name of ['idle','walk','run'])assert.ok(a.animations.some(c=>c.name===name));
+ const one=clone(a.scene),two=clone(a.scene),mixer=new AnimationMixer(one);mixer.clipAction(a.animations.find(c=>c.name==='walk')).play();
+ let meshes=0,triangles=0;one.traverse(o=>{if(o.isMesh){meshes++;triangles+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3;assert.ok(o.material);if(ANIMALS[id].pack!=='stickman')assert.ok(o.material.map);}});assert.ok(meshes>0);assert.ok(triangles<4000);
+ mixer.update(.1);one.updateMatrixWorld(true);const before=[];one.traverse(o=>before.push(o.matrixWorld.elements.slice()));mixer.update(.2);one.updateMatrixWorld(true);let changed=0;one.traverse(o=>{const b=before.shift();if(o.matrixWorld.elements.some((v,i)=>Math.abs(v-b[i])>1e-6))changed++;assert.ok(o.matrixWorld.elements.every(Number.isFinite));});assert.ok(changed>0);
+ let bone1,bone2;one.traverse(o=>{if(o.isBone)bone1=o;});two.traverse(o=>{if(o.isBone)bone2=o;});if(ANIMALS[id].pack!=='slime'){assert.ok(bone1);assert.notEqual(bone1,bone2);}
+});

@@ -1,3 +1,4 @@
+import {RELEASE} from '../src/release.mjs';
 import {createServer} from 'node:http';
 import {randomBytes,timingSafeEqual} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
@@ -9,7 +10,7 @@ import {createGame} from './game.mjs';
 export function createSchool({teacherCode=process.env.TEACHER_CODE,origins=(process.env.ALLOWED_ORIGINS||'http://localhost:5173').split(',').map(s=>s.trim()).filter(Boolean),grace=30000,gameOptions={}}={}){
  const players=new Map(),attempts=new Map();
 
- const http=createServer((req,res)=>{res.writeHead(req.url==='/health'?200:404,{'Content-Type':'application/json'});res.end(JSON.stringify({ok:req.url==='/health'}));});
+ const http=createServer((req,res)=>{res.writeHead(req.url==='/health'?200:404,{'Content-Type':'application/json'});res.end(JSON.stringify({ok:req.url==='/health',version:RELEASE}));});
  const wss=new WebSocketServer({server:http,path:'/school',maxPayload:2048,perMessageDeflate:{threshold:512,concurrencyLimit:4}});
  const send=(ws,data)=>{if(ws.readyState===WebSocket.OPEN&&ws.bufferedAmount<128000)ws.send(JSON.stringify(data));};
  const engine=createGame(players,event=>{for(const p of players.values())if(p.ws)send(p.ws,event);},gameOptions),game=engine.game;
@@ -39,7 +40,7 @@ export function createSchool({teacherCode=process.env.TEACHER_CODE,origins=(proc
      }
      p={id,animal:animalId(m.animal),motion:'idle',role:teacher?'teacher':'student',name:String(m.name||'탐험가').slice(0,12),color:/^#[0-9a-f]{6}$/i.test(m.color)?m.color:'#e9ae69',hat:['cap','flower','none'].includes(m.hat)?m.hat:'cap',token:randomBytes(24).toString('hex'),x:0,z:4,y:0,vy:0,facing:0,ack:0};engine.init(p);players.set(id,p);
     }
-    p.ws=ws;p.queue=[];p.lastSeen=Date.now();p.lastSeq=p.ack;clearTimeout(timeout);send(ws,{type:'welcome',id:p.id,token:p.token,ack:p.ack});return;
+    p.ws=ws;p.queue=[];p.lastSeen=Date.now();p.lastSeq=p.ack;clearTimeout(timeout);send(ws,{type:'welcome',version:RELEASE,id:p.id,token:p.token,ack:p.ack});return;
    }
    p.lastSeen=Date.now();
    if(m.type==='input'&&validInput(m)&&m.seq>p.lastSeq&&p.queue.length<6){p.lastSeq=m.seq;p.queue.push(m);}

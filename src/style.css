@@ -8,3 +8,5 @@
 .game-connected .profile{display:none}#toast{z-index:20}@media(max-width:700px){.game-connected .map{display:none}}@media(pointer:coarse) and (max-width:800px){.bottom{left:50%;transform:translateX(-50%);bottom:6px}.actions{bottom:90px}.tools button{width:40px}}
 
 .welcome label{font-size:15px}.welcome input,.welcome select{font-size:16px}.welcome .primary{font-size:18px;min-height:54px}.welcome .eyebrow{font-size:14px}.welcome .choices{grid-template-columns:1fr 1fr}#sprintHud{position:fixed;left:50%;bottom:115px;transform:translateX(-50%);padding:12px 16px;width:260px;pointer-events:none}#sprintHud[hidden]{display:none}#sprintHud>div{display:flex;justify-content:space-between;font-size:14px}#sprintHud progress{width:100%;height:18px;accent-color:#45956a}#sprintHud small{display:block;font-size:11px}#run kbd{font-size:12px}@media(pointer:coarse){#sprintHud{bottom:165px;width:230px}}@media(max-height:550px){#sprintHud{bottom:145px;padding:6px 12px;width:210px}.welcome{max-height:94dvh}}
+
+#releaseTag{position:fixed;right:8px;bottom:2px;z-index:40;max-width:95vw;font:10px sans-serif;background:#ffffffe0;color:#30463c;padding:3px 6px;pointer-events:none}
