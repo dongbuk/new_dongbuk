@@ -85,7 +85,7 @@ function networkState(state){
 }
 $('enter').onclick=()=>{
  if(net||!assetsReady)return;const role=$('connection').value;
- let url;try{url=new URL($('serverurl').value);if(!['ws:','wss:'].includes(url.protocol)||(location.protocol==='https:'&&url.protocol!=='wss:'))throw Error();}catch{$('connectmessage').textContent='서버 주소를 확인해 주세요. HTTPS 화면에서는 wss:// 주소가 필요해요.';return;}
+ let url;try{url=new URL($('serverurl').value.trim());if(!['ws:','wss:'].includes(url.protocol)||(location.protocol==='https:'&&url.protocol!=='wss:'))throw Error();}catch{$('connectmessage').textContent='서버 주소를 확인해 주세요. HTTPS 화면에서는 wss:// 주소가 필요해요.';return;}
  const number=Number($('number').value);if(role==='student'&&(!Number.isInteger(number)||number<1||number>32)){$('connectmessage').textContent='학생 번호는 1~32번이에요.';return;}
  net=new SchoolConnection(url.href,networkState,message=>{$('netstatus').textContent=message;$('connectmessage').textContent=message;if(net?.stopped){net=null;$('enter').disabled=false;}},event=>gameUI.event(event));
  $('enter').disabled=true;net.connect({role,number,name:$('nickname').value,animal:$('animal').value,code:$('teachercode').value});$('teachercode').value='';
