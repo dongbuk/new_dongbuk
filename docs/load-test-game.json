@@ -1,0 +1,31 @@
+{
+  "scope": "local loopback bots; not Render performance",
+  "clients": 33,
+  "connected": 33,
+  "seconds": 60.001,
+  "errors": 0,
+  "snapshots": 29920,
+  "decodedBytes": 483937318,
+  "transportBytes": 30487861,
+  "estimatedTransportGBPerHour": 1.82927166,
+  "compression": true,
+  "gamePhases": [
+    "FREE_EXPLORATION",
+    "GAME_WAITING",
+    "ROLE_REVEAL",
+    "ESCAPE_PHASE",
+    "CHASE_PHASE"
+  ],
+  "rttMs": {
+    "p50": 1,
+    "p95": 8
+  },
+  "snapshotGapMs": {
+    "p50": 66,
+    "p95": 71
+  },
+  "localProcess": {
+    "rssMiB": 198.01171875,
+    "eventLoopP95Ms": 10.936319
+  }
+}

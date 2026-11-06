@@ -1,7 +1,24 @@
 {
-  "name": "dongbuk-school-world",
+  "name": "dongbuk-schoolworld",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "engines": {"node": "24.x"},
-  "scripts": {"test": "node --test tests/*.test.mjs"}
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test tests/*.test.mjs",
+    "server": "node server/index.mjs",
+    "test:load": "node scripts/load-test.mjs"
+  },
+  "dependencies": {
+    "three": "0.180.0",
+    "ws": "8.18.3"
+  },
+  "devDependencies": {
+    "vite": "6.1.0"
+  },
+  "engines": {
+    "node": ">=22 <25"
+  }
 }

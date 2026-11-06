@@ -1,0 +1,101 @@
+[
+  {
+    "id": "cat",
+    "sourceSHA256": "fc336d185a1a74f1c529c53471f85bc400c41fb93b1764782a3bae8fc977f542",
+    "sourceBytes": 1846460,
+    "glbBytes": 829312,
+    "triangles": 2452,
+    "bounds": {
+      "min": [
+        -0.19782821554705246,
+        -0.004000043881861737,
+        -0.3250520230615535
+      ],
+      "max": [
+        0.19782825093701514,
+        0.5581769681483222,
+        0.23741035527671447
+      ]
+    },
+    "animations": [
+      "sit",
+      "run",
+      "eat",
+      "idle",
+      "attack",
+      "idle_alt",
+      "call",
+      "jump",
+      "sleep",
+      "walk",
+      "hit",
+      "death"
+    ]
+  },
+  {
+    "id": "fox",
+    "sourceSHA256": "ac1c9b2b6ed90d0c1d2c103c55f5d0bc692ce2e935a6dfaddb8be23d610691b4",
+    "sourceBytes": 1822028,
+    "glbBytes": 841496,
+    "triangles": 2500,
+    "bounds": {
+      "min": [
+        -0.21416468762317117,
+        -0.004000078999627181,
+        -0.5469380436319197
+      ],
+      "max": [
+        0.21416472054561922,
+        0.6368246383440946,
+        0.3833667909570185
+      ]
+    },
+    "animations": [
+      "hit",
+      "walk",
+      "run",
+      "sit",
+      "call",
+      "eat",
+      "sleep",
+      "jump",
+      "death",
+      "idle",
+      "idle_alt",
+      "attack"
+    ]
+  },
+  {
+    "id": "owl",
+    "sourceSHA256": "a1ed1544e8f1a5fc1931b8be07cf6e0f05dd39641f43931fc7ac5bdf7ecc9133",
+    "sourceBytes": 1416844,
+    "glbBytes": 745072,
+    "triangles": 2700,
+    "bounds": {
+      "min": [
+        -0.23265721840543493,
+        -0.004000028073049828,
+        -0.18704791178492142
+      ],
+      "max": [
+        0.2326571618575689,
+        0.6326876399055503,
+        0.17503910329548378
+      ]
+    },
+    "animations": [
+      "hit",
+      "sit",
+      "attack",
+      "call",
+      "sleep",
+      "idle_alt",
+      "jump",
+      "fly",
+      "idle",
+      "death",
+      "walk",
+      "eat"
+    ]
+  }
+]

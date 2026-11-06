@@ -1,0 +1,22 @@
+{
+  "scope": "local loopback bots; not Render performance",
+  "clients": 33,
+  "connected": 33,
+  "seconds": 30.001,
+  "errors": 0,
+  "snapshots": 14906,
+  "receivedBytes": 111096949,
+  "estimatedOutboundGBPerHour": 13.33163388,
+  "rttMs": {
+    "p50": 0,
+    "p95": 1
+  },
+  "snapshotGapMs": {
+    "p50": 66,
+    "p95": 68
+  },
+  "localProcess": {
+    "rssMiB": 60.03515625,
+    "eventLoopP95Ms": 10.969087
+  }
+}
